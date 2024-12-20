@@ -26,6 +26,8 @@ public class CustomerDto {
 
     private String phoneNumber;
 
+    private boolean active;
+
 
     private List<Account> accounts;
 

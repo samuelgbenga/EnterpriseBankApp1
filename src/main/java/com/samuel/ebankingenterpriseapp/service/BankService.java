@@ -7,7 +7,7 @@ public interface BankService {
     ApiResponse registerBank(BankRequest bankRequest);
     ApiResponse updateBank(Long bankId, BankRequest bank);
     ApiResponse fetchBankDetails(Long bankId);
-    ApiResponse fetchAllBanks();
     ApiResponse fetchBankBranches(Long bankId);
-    void softDeleteBank(Long bankId);
+    ApiResponse fetchBankManagers(Long managerId);
+    ApiResponse softDeleteBank(Long bankId);
 }

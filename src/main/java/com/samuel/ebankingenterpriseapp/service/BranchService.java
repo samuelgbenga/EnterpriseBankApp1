@@ -11,7 +11,6 @@ public interface BranchService {
 
     ApiResponse fetchBranchDetails(Long branchId);
 
-    ApiResponse listBranchesForBank(Long bankId);
 
     void softDeleteBranch(Long branchId);
 }

@@ -15,5 +15,5 @@ import java.util.List;
 public class ApiResponse {
     private String message;
     private Object object;
-    private List<Object> objectList;
+    private List<?> objectList;
 }

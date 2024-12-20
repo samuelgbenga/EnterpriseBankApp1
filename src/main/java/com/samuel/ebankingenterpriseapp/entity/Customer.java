@@ -26,6 +26,8 @@ public class Customer {
 
     private String phoneNumber;
 
+    private boolean active;
+
     @ManyToMany(mappedBy = "customers")
     private List<Account> accounts;
 

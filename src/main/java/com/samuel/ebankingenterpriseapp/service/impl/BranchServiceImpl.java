@@ -12,20 +12,11 @@ import com.samuel.ebankingenterpriseapp.service.BranchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+
 import java.util.Optional;
 
 
-// consider this?
-// every creation of manager should have a branch initiated.
-// so i will include creation of a branch in the constructor of a manager
-// so branch would not be created without a manager
-// the manager of a branch can be updated
-// which will automatically displace the other manager
-// so it means a manager can be created without a branch and then later attached to a branch
-// then another manager can be deleted and removed from being the manager of that branch hence the branch
-// under that manager would be null
+
 @Service
 @RequiredArgsConstructor
 public class BranchServiceImpl implements BranchService {
@@ -98,19 +89,7 @@ public class BranchServiceImpl implements BranchService {
         }
     }
 
-    @Override
-    public ApiResponse listBranchesForBank(Long bankId) {
-        try {
-            List<Branch> branches = branchRepository.findByBankId(bankId);
-            if (!branches.isEmpty()) {
-                return new ApiResponse("Branches fetched successfully", null, Collections.singletonList(branches));
-            } else {
-                return new ApiResponse("No branches found for this bank", null, null);
-            }
-        } catch (Exception e) {
-            return new ApiResponse("Error fetching branches: " + e.getMessage(), null, null);
-        }
-    }
+
 
     @Override
     public void softDeleteBranch(Long branchId) {
@@ -123,7 +102,7 @@ public class BranchServiceImpl implements BranchService {
                 branchRepository.save(branch);
             }
         } catch (Exception e) {
-            // Log or handle the error accordingly
+            System.out.println(e.getMessage());
         }
 
     }

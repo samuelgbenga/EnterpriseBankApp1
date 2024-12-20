@@ -1,0 +1,64 @@
+
+#### Questions and Todos #####################################################################################
+i am just focused on normal crud operation for each entity.
+afterwards i will settle the connections between the different services.
+the influentital service and the more business intrecate logic connects each service.
+----
+// consider this?
+// every creation of manager should have a branch initiated.
+// so i will include creation of a branch in the constructor of a manager
+// so branch would not be created without a manager
+// the manager of a branch can be updated
+// which will automatically displace the other manager
+// so it means a manager can be created without a branch and then later attached to a branch
+// then another manager can be deleted and removed from being the manager of that branch hence the branch
+// under that manager would be null
+-----
+look into proper logging managment in spring boot using the right tool
+loggin best practice: using s4jl whatever or any other tools.
+----
+why not is System.out.println not prefered over the other loggins or are they not doing same thing loggins
+---
+Adjust to meet best practice implement DTos and ModelMapper and proper Loggins and Error Handling
+using custome Error Handler as the case may be.
+#############################################################################################################
+
+
+
+####### Progress and Where am at ################################################################################
+i am done with the first stage which is to
+get the basic crud operations out the door...
+What connects this core entities are transaction and loan
+i could have kept the loan inside the transaction but i like a thorough seperation of concern
+----
+now to test what i have done so far with swagger
+--
+next i will try to get look at the questions raised during the process
+##############################################################################################################
+
+
+
+
+###### Back logs ################################################################################################
+----
+I would also like to implement bvn mechanism
+---
+Security will be the last thing to implement
+---
+consider include bankers who attend to customers loans and transaction
+and also capture transaction made via atm.
+--
+i migth consider utilizing index on the database (for fun and learning purposes)
+--
+implement push notification using websocket + workerservice + localstorage
+
+################################################################################################################
+
+
+
+######################### Answers #####################
+Yes customers do not belong to a particular branch but the account that is tied to that customer
+can belong to a particular branch.
+################################################################################################################
+
+

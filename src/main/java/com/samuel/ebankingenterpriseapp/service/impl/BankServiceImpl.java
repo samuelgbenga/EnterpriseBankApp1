@@ -2,11 +2,14 @@ package com.samuel.ebankingenterpriseapp.service.impl;
 
 import com.samuel.ebankingenterpriseapp.entity.Bank;
 import com.samuel.ebankingenterpriseapp.entity.Branch;
+import com.samuel.ebankingenterpriseapp.entity.BranchManager;
 import com.samuel.ebankingenterpriseapp.payload.request.BankRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.BankRepository;
+import com.samuel.ebankingenterpriseapp.repository.BranchManagerRepository;
 import com.samuel.ebankingenterpriseapp.repository.BranchRepository;
 import com.samuel.ebankingenterpriseapp.service.BankService;
+import com.samuel.ebankingenterpriseapp.service.BranchManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,8 @@ public class BankServiceImpl implements BankService {
     private final BankRepository bankRepository;
 
     private final BranchRepository branchRepository;
+
+    private final BranchManagerRepository branchManagerRepository;
 
 
     @Override
@@ -73,23 +78,13 @@ public class BankServiceImpl implements BankService {
         }
     }
 
-    @Override
-    public ApiResponse fetchAllBanks() {
-        try {
-            List<Bank> banks = bankRepository.findAll();
-
-            return new ApiResponse("Banks fetched successfully", null, Collections.singletonList(banks));
-        } catch (Exception e) {
-            return new ApiResponse("Error fetching banks: " + e.getMessage(), null, null);
-        }
-    }
 
     @Override
     public ApiResponse fetchBankBranches(Long bankId) {
         try {
             List<Branch> branches = branchRepository.findByBankId(bankId);
             if (!branches.isEmpty()) {
-                return new ApiResponse("Branches fetched successfully", null, Collections.singletonList(branches));
+                return new ApiResponse("Branches fetched successfully", null, branches);
             } else {
                 return new ApiResponse("No branches found for this bank", null, null);
             }
@@ -99,18 +94,40 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void softDeleteBank(Long bankId) {
+    public ApiResponse fetchBankManagers(Long bankId) {
+        try {
+            List<BranchManager> branchManagers = branchManagerRepository.findByBankId(bankId);
+            if (!branchManagers.isEmpty()) {
+                return new ApiResponse("Branch Managers fetched successfully", null, branchManagers);
+            } else {
+                return new ApiResponse("No Branch Manager found for this bank", null, null);
+            }
+        } catch (Exception e) {
+            return new ApiResponse("Error fetching Branch Manager: " + e.getMessage(), null, null);
+        }
+    }
+
+    @Override
+    public ApiResponse softDeleteBank(Long bankId) {
 
         try {
             Optional<Bank> existingBank = bankRepository.findById(bankId);
             if (existingBank.isPresent()) {
+
                 Bank bank = existingBank.get();
+
+                if(!bank.isActive()){
+                    return ApiResponse.builder().message("Bank Already Deleted").build();
+                }
+
                 bank.setActive(false); // Set the bank as inactive (soft delete)
                 bankRepository.save(bank);
+                return ApiResponse.builder().message("Bank Deleted.").build();
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        return ApiResponse.builder().message("Bank With that ID does not Exist").build();
     }
 }
