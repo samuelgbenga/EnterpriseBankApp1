@@ -22,6 +22,6 @@ public class AccountRequest {
 
     private BigDecimal balance;
 
-    private Branch branch;
+    private boolean active;
 
 }

@@ -13,5 +13,5 @@ public interface CustomerService {
 
     ApiResponse updateCustomer(Long customerId, CustomerRequest customerRequest);
 
-    void softDeleteCustomer(Long customerId);
+    ApiResponse softDeleteCustomer(Long customerId);
 }

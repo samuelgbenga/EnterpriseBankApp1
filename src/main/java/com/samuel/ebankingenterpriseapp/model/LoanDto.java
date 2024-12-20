@@ -28,5 +28,11 @@ public class LoanDto {
 
     private String status; // Pending, Approved, Paid
 
-    private Customer customer;
+    //private Customer customer;
+
+    // will be handle by the model mapper
+    private String customerName;
+
+    private Long customerId;
+
 }

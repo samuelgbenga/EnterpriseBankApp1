@@ -39,11 +39,11 @@ public class BankController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{bankId}/branch-managers")
-    public ResponseEntity<ApiResponse> fetchBankBranchManagers(@PathVariable Long bankId) {
-        ApiResponse response = bankService.fetchBankManagers(bankId);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/{bankId}/branch-managers")
+//    public ResponseEntity<ApiResponse> fetchBankBranchManagers(@PathVariable Long bankId) {
+//        ApiResponse response = bankService.fetchBankManagers(bankId);
+//        return ResponseEntity.ok(response);
+//    }
 
     @DeleteMapping("/{bankId}")
     public ResponseEntity<ApiResponse> softDeleteBank(@PathVariable Long bankId) {

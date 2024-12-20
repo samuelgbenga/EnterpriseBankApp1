@@ -13,5 +13,5 @@ public interface BranchManagerService {
 
     ApiResponse fetchBranchManagerByBranch(Long branchId);
 
-    void deleteBranchManager(Long branchManagerId);
+    ApiResponse deleteBranchManager(Long branchManagerId);
 }

@@ -3,6 +3,8 @@ package com.samuel.ebankingenterpriseapp.service.impl;
 import com.samuel.ebankingenterpriseapp.entity.Bank;
 import com.samuel.ebankingenterpriseapp.entity.Branch;
 import com.samuel.ebankingenterpriseapp.entity.BranchManager;
+import com.samuel.ebankingenterpriseapp.model.BankDto;
+import com.samuel.ebankingenterpriseapp.model.BranchDto;
 import com.samuel.ebankingenterpriseapp.payload.request.BankRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.BankRepository;
@@ -11,6 +13,7 @@ import com.samuel.ebankingenterpriseapp.repository.BranchRepository;
 import com.samuel.ebankingenterpriseapp.service.BankService;
 import com.samuel.ebankingenterpriseapp.service.BranchManagerService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,7 +29,8 @@ public class BankServiceImpl implements BankService {
 
     private final BranchRepository branchRepository;
 
-    private final BranchManagerRepository branchManagerRepository;
+
+    private final ModelMapper modelMapper;
 
 
     @Override
@@ -39,7 +43,9 @@ public class BankServiceImpl implements BankService {
                     .active(true)  // Banks are active by default
                     .build();
             bank = bankRepository.save(bank);
-            return new ApiResponse("Bank registered successfully", bank, null);
+
+            BankDto bankDto = modelMapper.map(bank, BankDto.class);
+            return new ApiResponse("Bank registered successfully", bankDto, null);
         } catch (Exception e) {
             return new ApiResponse("Error registering bank: " + e.getMessage(), null, null);
         }
@@ -55,7 +61,8 @@ public class BankServiceImpl implements BankService {
                 bank.setAddress(bankRequest.getAddress());
                 bank.setContactDetails(bankRequest.getContactDetails());
                 bank = bankRepository.save(bank);
-                return new ApiResponse("Bank updated successfully", bank, null);
+
+                return new ApiResponse("Bank updated successfully", null, null);
             } else {
                 return new ApiResponse("Bank not found", null, null);
             }
@@ -69,7 +76,8 @@ public class BankServiceImpl implements BankService {
         try {
             Optional<Bank> bank = bankRepository.findById(bankId);
             if (bank.isPresent()) {
-                return new ApiResponse("Bank details fetched successfully", bank.get(), null);
+                BankDto bankDto = modelMapper.map(bank.get(), BankDto.class);
+                return new ApiResponse("Bank details fetched successfully", bankDto, null);
             } else {
                 return new ApiResponse("Bank not found", null, null);
             }
@@ -93,19 +101,19 @@ public class BankServiceImpl implements BankService {
         }
     }
 
-    @Override
-    public ApiResponse fetchBankManagers(Long bankId) {
-        try {
-            List<BranchManager> branchManagers = branchManagerRepository.findByBankId(bankId);
-            if (!branchManagers.isEmpty()) {
-                return new ApiResponse("Branch Managers fetched successfully", null, branchManagers);
-            } else {
-                return new ApiResponse("No Branch Manager found for this bank", null, null);
-            }
-        } catch (Exception e) {
-            return new ApiResponse("Error fetching Branch Manager: " + e.getMessage(), null, null);
-        }
-    }
+//    @Override
+//    public ApiResponse fetchBankManagers() {
+//        try {
+//            List<BranchManager> branchManagers = branchManagerRepository.findAll();
+//            if (!branchManagers.isEmpty()) {
+//                return new ApiResponse("Branch Managers fetched successfully", null, branchManagers);
+//            } else {
+//                return new ApiResponse("No Branch Manager found for this bank", null, null);
+//            }
+//        } catch (Exception e) {
+//            return new ApiResponse("Error fetching Branch Manager: " + e.getMessage(), null, null);
+//        }
+//    }
 
     @Override
     public ApiResponse softDeleteBank(Long bankId) {

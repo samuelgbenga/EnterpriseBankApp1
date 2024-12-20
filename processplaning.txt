@@ -1,4 +1,19 @@
 
+#### Urgent and Todos #####################################################################################
+create a seperate AccountService account controller,
+
+make the account number generate randomly automatically.
+--
+make acccount creation flexible in terms of the number of customer id that it can be taken.
+since the number of customers can vary upon creation of account.
+--
+also update the both save and update to return that particular entity.
+so it will be easy for the frontend to capture any update or save by that return so no need for extra call
+
+#############################################################################################################
+
+
+
 #### Questions and Todos #####################################################################################
 i am just focused on normal crud operation for each entity.
 afterwards i will settle the connections between the different services.
@@ -59,6 +74,9 @@ implement push notification using websocket + workerservice + localstorage
 ######################### Answers #####################
 Yes customers do not belong to a particular branch but the account that is tied to that customer
 can belong to a particular branch.
+----
+So Manager will be assigned to branch after branch creation then the manager field of the
+Branch will be updated to include the branch
 ################################################################################################################
 
 

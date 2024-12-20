@@ -79,9 +79,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void softDeleteCustomer(Long customerId) {
+    public ApiResponse softDeleteCustomer(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+        if(!customer.isActive()) return new ApiResponse("Customer already Deleted!", null, null );
         customer.setActive(false);
+        customerRepository.save(customer);
+        return new ApiResponse("Customer Deleted", null, null);
     }
 }

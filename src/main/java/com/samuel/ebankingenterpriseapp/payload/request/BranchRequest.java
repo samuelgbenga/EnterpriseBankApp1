@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class BranchRequest {
 
-    private Long id;
+
 
     private String name;
 
@@ -26,5 +26,4 @@ public class BranchRequest {
 
     private boolean active;
 
-    private Bank bank;
 }

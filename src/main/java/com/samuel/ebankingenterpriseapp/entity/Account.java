@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,8 @@ public class Account {
 
     private BigDecimal balance;
 
+    private boolean active;
+
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
@@ -33,7 +36,7 @@ public class Account {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "customer_id")
     )
-    private List<Customer> customers;
+    private List<Customer> customers = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;

@@ -1,6 +1,7 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,9 +27,8 @@ public class Bank {
 
     private boolean active;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Branch> branches;
 
-    @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BranchManager> branchManagers;
 }

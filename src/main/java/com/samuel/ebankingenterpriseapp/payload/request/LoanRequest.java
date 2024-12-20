@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Builder
 public class LoanRequest {
 
-    private Long id;
+
 
     private BigDecimal amount;
 
@@ -29,5 +29,5 @@ public class LoanRequest {
 
     private LoanStatus loanStatus = LoanStatus.PENDING; // Pending, Approved, Paid
 
-    private Customer customer;
+
 }

@@ -8,6 +8,6 @@ public interface BankService {
     ApiResponse updateBank(Long bankId, BankRequest bank);
     ApiResponse fetchBankDetails(Long bankId);
     ApiResponse fetchBankBranches(Long bankId);
-    ApiResponse fetchBankManagers(Long managerId);
+  //  ApiResponse fetchBankManagers(Long managerId);
     ApiResponse softDeleteBank(Long bankId);
 }

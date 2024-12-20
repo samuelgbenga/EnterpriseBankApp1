@@ -1,6 +1,7 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +22,9 @@ public class BranchManager {
     private String contactNumber;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "bank_id", nullable = false)
-    private Bank bank;  // A branch manager is associated with a specific branch
+    private boolean active;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "branch_id")
     private Branch branch;

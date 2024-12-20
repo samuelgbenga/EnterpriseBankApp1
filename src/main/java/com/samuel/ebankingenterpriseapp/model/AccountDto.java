@@ -21,9 +21,15 @@ public class AccountDto {
 
     private BigDecimal balance;
 
-    private Branch branch;
-
     private List<Customer> customers;
 
     private List<Transaction> transactions;
+
+    private boolean active;
+
+
+    // will be handled by the mapper
+    private String branchName;
+
+    private Long branchId;
 }

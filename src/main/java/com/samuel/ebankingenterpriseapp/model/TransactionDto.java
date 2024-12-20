@@ -26,5 +26,9 @@ public class TransactionDto {
 
     private LocalDate transactionDate;
 
-    private Account account;
+   // private Account account;
+
+    private String accountName;
+
+    private Long accountId;
 }

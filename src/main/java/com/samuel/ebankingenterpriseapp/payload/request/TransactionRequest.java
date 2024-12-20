@@ -23,5 +23,5 @@ public class TransactionRequest {
 
     private LocalDate transactionDate;
 
-    private Account account;
+
 }

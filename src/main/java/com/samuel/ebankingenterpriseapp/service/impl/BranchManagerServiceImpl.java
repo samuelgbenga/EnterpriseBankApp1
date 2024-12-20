@@ -35,6 +35,8 @@ public class BranchManagerServiceImpl implements BranchManagerService {
                         .branch(branch) // Linking the branch to the manager
                         .build();
                 branchManagerRepository.save(branchManager);
+                branch.setBranchManager(branchManager);
+                branchRepository.save(branch);
                 return new ApiResponse("Branch Manager added successfully", branchManager, null);
             } else {
                 return new ApiResponse("Branch not found", null, null);
@@ -95,12 +97,19 @@ public class BranchManagerServiceImpl implements BranchManagerService {
     }
 
     @Override
-    public void deleteBranchManager(Long branchManagerId) {
+    public ApiResponse deleteBranchManager(Long branchManagerId) {
         try {
             Optional<BranchManager> branchManagerOptional = branchManagerRepository.findById(branchManagerId);
-            branchManagerOptional.ifPresent(branchManager -> branchManagerRepository.delete(branchManager));
+            //branchManagerOptional.ifPresent(branchManager -> branchManager.setActive(false));
+            if(branchManagerOptional.isPresent()){
+                BranchManager branchManager = branchManagerOptional.get();
+                if(!branchManager.isActive()) return  ApiResponse.builder().message("Manager Already Deleted!").build();
+                branchManager.setActive(false);
+            }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return  ApiResponse.builder().message("Manager Deleted.").build();
     }
 }

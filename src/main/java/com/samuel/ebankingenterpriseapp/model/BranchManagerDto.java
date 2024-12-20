@@ -21,7 +21,13 @@ public class BranchManagerDto {
     private String contactNumber;
     private String email;
 
-    private Bank bank;  // A branch manager is associated with a specific branch
 
-    private Branch branch;
+//    private Bank bank;  // A branch manager is associated with a specific branch
+//
+//    private Branch branch;
+
+
+    private String branchName;
+
+    private Long branchId;
 }

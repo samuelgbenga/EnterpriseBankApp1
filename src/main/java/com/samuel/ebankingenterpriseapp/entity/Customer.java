@@ -4,6 +4,7 @@ package com.samuel.ebankingenterpriseapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Customer {
     private boolean active;
 
     @ManyToMany(mappedBy = "customers")
-    private List<Account> accounts;
+    private List<Account> accounts = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Loan> loans;
