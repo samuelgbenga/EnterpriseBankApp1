@@ -25,7 +25,7 @@ public class Bank {
 
     private String contactDetails;
 
-    private boolean active;
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL, orphanRemoval = true)

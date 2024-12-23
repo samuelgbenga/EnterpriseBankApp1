@@ -24,6 +24,5 @@ public class BranchRequest {
 
     private int branchCode;
 
-    private boolean active;
 
 }

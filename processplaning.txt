@@ -1,7 +1,9 @@
 
 #### Urgent and Todos #####################################################################################
-create a seperate AccountService account controller,
 
+---
+Seed the bank upon starting the app and remove the register endpoint
+---
 make the account number generate randomly automatically.
 --
 make acccount creation flexible in terms of the number of customer id that it can be taken.
@@ -36,6 +38,14 @@ why not is System.out.println not prefered over the other loggins or are they no
 ---
 Adjust to meet best practice implement DTos and ModelMapper and proper Loggins and Error Handling
 using custome Error Handler as the case may be.
+--
+The Bank will later be seeded and any point of Api contact for registering new
+Bank will be removed but edit will be allowed.
+--
+there would be access levels
+the bank overall access
+customers transactions and financial plan and loan
+Branch level that managers there own customers account for them. ( customers regiesterd under them)
 #############################################################################################################
 
 

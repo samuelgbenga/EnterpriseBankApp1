@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,7 @@ public class AccountServiceImpl implements AccountService {
                         .accountNumber(accountRequest.getAccountNumber())
                         .balance(accountRequest.getBalance())
                         .branch(branch)
+                        .customers(new ArrayList<>())
                         .active(true)
                         .build();
                 account.getCustomers().add(customerOptional.get());

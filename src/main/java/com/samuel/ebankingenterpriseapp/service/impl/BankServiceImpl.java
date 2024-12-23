@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,6 @@ public class BankServiceImpl implements BankService {
                     .name(bankRequest.getName())
                     .address(bankRequest.getAddress())
                     .contactDetails(bankRequest.getContactDetails())
-                    .active(true)  // Banks are active by default
                     .build();
             bank = bankRepository.save(bank);
 
@@ -62,7 +62,9 @@ public class BankServiceImpl implements BankService {
                 bank.setContactDetails(bankRequest.getContactDetails());
                 bank = bankRepository.save(bank);
 
-                return new ApiResponse("Bank updated successfully", null, null);
+                BankDto bankDto = modelMapper.map(bank, BankDto.class);
+
+                return new ApiResponse("Bank updated successfully", bankDto, null);
             } else {
                 return new ApiResponse("Bank not found", null, null);
             }
@@ -71,6 +73,7 @@ public class BankServiceImpl implements BankService {
         }
     }
 
+    // Todo: Secure this endpoint
     @Override
     public ApiResponse fetchBankDetails(Long bankId) {
         try {
@@ -87,10 +90,13 @@ public class BankServiceImpl implements BankService {
     }
 
 
+    // Todo: This will be corrected to get it directly from the list
     @Override
-    public ApiResponse fetchBankBranches(Long bankId) {
+    public ApiResponse fetchBankBranches() {
         try {
-            List<Branch> branches = branchRepository.findByBankId(bankId);
+
+            List<Bank> banks = bankRepository.findAll();
+            List<Branch> branches = banks.getFirst().getBranches();
             if (!branches.isEmpty()) {
                 return new ApiResponse("Branches fetched successfully", null, branches);
             } else {
@@ -101,41 +107,27 @@ public class BankServiceImpl implements BankService {
         }
     }
 
-//    @Override
-//    public ApiResponse fetchBankManagers() {
-//        try {
-//            List<BranchManager> branchManagers = branchManagerRepository.findAll();
-//            if (!branchManagers.isEmpty()) {
-//                return new ApiResponse("Branch Managers fetched successfully", null, branchManagers);
-//            } else {
-//                return new ApiResponse("No Branch Manager found for this bank", null, null);
-//            }
-//        } catch (Exception e) {
-//            return new ApiResponse("Error fetching Branch Manager: " + e.getMessage(), null, null);
-//        }
-//    }
-
+    // Todo: Same with same function but this will return the manager attached to the branch
     @Override
-    public ApiResponse softDeleteBank(Long bankId) {
-
+    public ApiResponse fetchBankManagers() {
         try {
-            Optional<Bank> existingBank = bankRepository.findById(bankId);
-            if (existingBank.isPresent()) {
-
-                Bank bank = existingBank.get();
-
-                if(!bank.isActive()){
-                    return ApiResponse.builder().message("Bank Already Deleted").build();
-                }
-
-                bank.setActive(false); // Set the bank as inactive (soft delete)
-                bankRepository.save(bank);
-                return ApiResponse.builder().message("Bank Deleted.").build();
+            List<Bank> banks = bankRepository.findAll();
+            List<Branch> branches = banks.getFirst().getBranches();
+            List<BranchManager> branchManagers = new ArrayList<>();
+            for(Branch branch : branches){
+                branchManagers.add(branch.getBranchManager());
             }
-
+            if (!branchManagers.isEmpty()) {
+                return new ApiResponse("Branch Managers fetched successfully", null, branchManagers);
+            } else {
+                return new ApiResponse("No Branch Manager found for this bank", null, null);
+            }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return new ApiResponse("Error fetching Branch Manager: " + e.getMessage(), null, null);
         }
-        return ApiResponse.builder().message("Bank With that ID does not Exist").build();
+
     }
+
+
+
 }

@@ -1,6 +1,8 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,10 +28,12 @@ public class Account {
 
     private boolean active;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
+    @JsonManagedReference
     @ManyToMany
     @JoinTable(
             name = "account_customer",

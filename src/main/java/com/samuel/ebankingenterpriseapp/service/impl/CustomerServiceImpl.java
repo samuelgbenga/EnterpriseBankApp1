@@ -42,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
         return ApiResponse.builder()
                 .message("Customer details fetched successfully")
                 .object(customer)
+                .objectList(customer.getAccounts())
                 .build();
     }
 

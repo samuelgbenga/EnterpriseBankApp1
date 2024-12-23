@@ -1,6 +1,7 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Customer {
 
     private boolean active;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "customers")
     private List<Account> accounts = new ArrayList<>();
 

@@ -25,7 +25,5 @@ public class BankDto {
 
     private String contactDetails;
 
-    private boolean active;
-
     private List<Branch> branches;
 }

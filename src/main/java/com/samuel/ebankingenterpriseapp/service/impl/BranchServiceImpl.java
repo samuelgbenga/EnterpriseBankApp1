@@ -110,5 +110,11 @@ public class BranchServiceImpl implements BranchService {
         return ApiResponse.builder().message("something went wrong while deleting branch.").build();
 
     }
+
+    // Todo: this two below service method will be implemented in the branch level then used in the bank level
+    // Todo: i will also like to return them as map: that is each transaction is mapped to there respective branch
+    // Todo: same with the loans
+    //  Todo: fetch all transactions
+    // Todo: Fetch all loans
 }
 

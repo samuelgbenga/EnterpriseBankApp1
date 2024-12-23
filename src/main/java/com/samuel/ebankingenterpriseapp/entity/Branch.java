@@ -38,6 +38,7 @@ public class Branch {
     @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts;
 }
