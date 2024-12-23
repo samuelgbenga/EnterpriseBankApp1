@@ -15,11 +15,11 @@ public class BankController {
 
     private final BankService bankService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> registerBank(@RequestBody BankRequest bankRequest) {
-        ApiResponse response = bankService.registerBank(bankRequest);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping
+//    public ResponseEntity<ApiResponse> registerBank(@RequestBody BankRequest bankRequest) {
+//        ApiResponse response = bankService.registerBank(bankRequest);
+//        return ResponseEntity.ok(response);
+//    }
 
     @PutMapping("/{bankId}")
     public ResponseEntity<ApiResponse> updateBank(@PathVariable Long bankId, @RequestBody BankRequest bankRequest) {
@@ -27,9 +27,9 @@ public class BankController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{bankId}")
-    public ResponseEntity<ApiResponse> fetchBankDetails(@PathVariable Long bankId) {
-        ApiResponse response = bankService.fetchBankDetails(bankId);
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse> fetchBankDetails() {
+        ApiResponse response = bankService.fetchBankDetails();
         return ResponseEntity.ok(response);
     }
 

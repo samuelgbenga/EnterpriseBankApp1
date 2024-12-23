@@ -25,7 +25,7 @@ public class BranchManagerServiceImpl implements BranchManagerService {
     public ApiResponse addBranchManager(Long branchId, BranchManagerRequest branchManagerRequest) {
         try {
             Optional<Branch> branchOptional = branchRepository.findById(branchId);
-            if (branchOptional.isPresent()) {
+            if (branchOptional.isPresent() && branchOptional.get().getBranchManager() == null) {
                 Branch branch = branchOptional.get();
                 BranchManager branchManager = BranchManager.builder()
                         .firstName(branchManagerRequest.getFirstName())
@@ -39,7 +39,7 @@ public class BranchManagerServiceImpl implements BranchManagerService {
                 branchRepository.save(branch);
                 return new ApiResponse("Branch Manager added successfully", branchManager, null);
             } else {
-                return new ApiResponse("Branch not found", null, null);
+                return new ApiResponse("Branch not found or Manager already exist", null, null);
             }
         } catch (Exception e) {
             return new ApiResponse("Error adding Branch Manager: " + e.getMessage(), null, null);
@@ -47,11 +47,12 @@ public class BranchManagerServiceImpl implements BranchManagerService {
     }
 
     @Override
-    public ApiResponse updateBranchManager(Long branchManagerId, BranchManagerRequest branchManagerRequest) {
+    public ApiResponse updateBranchManager(Long branchId, BranchManagerRequest branchManagerRequest) {
         try {
-            Optional<BranchManager> branchManagerOptional = branchManagerRepository.findById(branchManagerId);
-            if (branchManagerOptional.isPresent()) {
-                BranchManager branchManager = branchManagerOptional.get();
+            Optional<Branch> branchOptional = branchRepository.findById(branchId);
+
+            if (branchOptional.isPresent()) {
+                BranchManager branchManager = branchOptional.get().getBranchManager();
                 branchManager.setFirstName(branchManagerRequest.getFirstName());
                 branchManager.setLastName(branchManagerRequest.getLastName());
                 branchManager.setContactNumber(branchManagerRequest.getContactNumber());

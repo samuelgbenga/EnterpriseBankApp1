@@ -18,10 +18,6 @@ import java.util.List;
 @Builder
 public class AccountRequest {
 
-    private String accountNumber;
-
-    private BigDecimal balance;
-
     private boolean active;
 
 }

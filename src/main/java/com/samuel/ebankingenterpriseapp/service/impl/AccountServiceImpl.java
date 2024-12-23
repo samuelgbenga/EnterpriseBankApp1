@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,25 +27,40 @@ public class AccountServiceImpl implements AccountService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public ApiResponse createAccount(AccountRequest accountRequest, Long branchId, Long customerId) {
-
+    public ApiResponse createAccount(Long branchId, List<Long> customerIds) {
         try {
             Optional<Branch> branchOptional = branchRepository.findById(branchId);
-            Optional<Customer> customerOptional = customerRepository.findById(customerId);
-            if (branchOptional.isPresent() && customerOptional.isPresent()) {
+            if (branchOptional.isPresent()) {
                 Branch branch = branchOptional.get();
+                List<Customer> customers = new ArrayList<>();
 
+                // Fetch all customers by their IDs
+                for (Long customerId : customerIds) {
+                    Optional<Customer> customerOptional = customerRepository.findById(customerId);
+                    if (customerOptional.isPresent()) {
+                        customers.add(customerOptional.get());
+                    } else {
+                        return ApiResponse.builder()
+                                .message("Customer not found with ID: " + customerId)
+                                .build();
+                    }
+                }
+
+                // Create the account and associate it with customers
                 Account account = Account.builder()
-                        .accountNumber(accountRequest.getAccountNumber())
-                        .balance(accountRequest.getBalance())
                         .branch(branch)
+                        .balance(new BigDecimal(0))
                         .customers(new ArrayList<>())
                         .active(true)
                         .build();
-                account.getCustomers().add(customerOptional.get());
-                customerOptional.get().getAccounts().add(account);
+
+                for (Customer customer : customers) {
+                    account.getCustomers().add(customer);
+                    customer.getAccounts().add(account);
+                }
 
                 Account savedAccount = accountRepository.save(account);
+
                 return ApiResponse.builder()
                         .message("Account created successfully")
                         .object(savedAccount)

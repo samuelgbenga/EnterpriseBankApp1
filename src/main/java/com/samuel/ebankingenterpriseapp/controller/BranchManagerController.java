@@ -24,10 +24,10 @@ public class BranchManagerController {
                 .body(response);
     }
 
-    @PutMapping("/update/{branchManagerId}")
-    public ResponseEntity<ApiResponse> updateBranchManager(@PathVariable Long branchManagerId,
+    @PutMapping("/update/{branchId}")
+    public ResponseEntity<ApiResponse> updateBranchManager(@PathVariable Long branchId,
                                                            @RequestBody BranchManagerRequest branchManagerRequest) {
-        ApiResponse response = branchManagerService.updateBranchManager(branchManagerId, branchManagerRequest);
+        ApiResponse response = branchManagerService.updateBranchManager(branchId, branchManagerRequest);
         return ResponseEntity.status(response.getMessage().contains("success") ? HttpStatus.OK : HttpStatus.NOT_FOUND)
                 .body(response);
     }

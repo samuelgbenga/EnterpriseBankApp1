@@ -18,14 +18,13 @@ public class BranchController {
     /**
      * Add a new branch to a bank.
      *
-     * @param bankId the ID of the bank
      * @param branchRequest the branch details
      * @return ApiResponse wrapped in ResponseEntity
      */
-    @PostMapping("/add/{bankId}")
-    public ResponseEntity<ApiResponse> addBranchToBank(@PathVariable Long bankId,
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> addBranchToBank(
                                                        @RequestBody BranchRequest branchRequest) {
-        ApiResponse response = branchService.addBranchToBank(bankId, branchRequest);
+        ApiResponse response = branchService.addBranchToBank( branchRequest);
         return ResponseEntity.ok(response);
     }
 

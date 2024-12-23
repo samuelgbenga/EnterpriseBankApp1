@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Getter
@@ -26,7 +27,7 @@ public class Branch {
 
     private boolean active;
 
-    private int branchCode;
+    private String branchCode;
 
 
     @JsonManagedReference
@@ -41,4 +42,13 @@ public class Branch {
     @JsonManagedReference
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Account> accounts;
+
+    @PrePersist
+    private void generateAccountNumber() {
+        if (this.branchCode == null || this.branchCode.isEmpty()) {
+
+            String randomDigits = String.format("%03d", new Random().nextInt(1000));
+            this.branchCode = randomDigits;
+        }
+    }
 }

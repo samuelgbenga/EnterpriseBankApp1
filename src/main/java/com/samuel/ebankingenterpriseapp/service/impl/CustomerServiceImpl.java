@@ -7,6 +7,7 @@ import com.samuel.ebankingenterpriseapp.payload.request.CustomerRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.AccountRepository;
 import com.samuel.ebankingenterpriseapp.repository.CustomerRepository;
+import com.samuel.ebankingenterpriseapp.service.AccountService;
 import com.samuel.ebankingenterpriseapp.service.CustomerService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @Override
     public ApiResponse registerCustomer(CustomerRequest customerRequest) {
@@ -27,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setLastName(customerRequest.getLastName());
         customer.setEmail(customerRequest.getEmail());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
+
         customer.setActive(true);
         customerRepository.save(customer);
         return ApiResponse.builder()

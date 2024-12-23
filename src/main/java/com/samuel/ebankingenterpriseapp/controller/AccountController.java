@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -17,12 +18,11 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @PostMapping("/create/{customerId}/{branchId}")
+    @PostMapping("/create/{branchId}")
     public ResponseEntity<ApiResponse> createAccount(
-            @PathVariable Long customerId,
-            @PathVariable Long branchId,
-            @RequestBody AccountRequest accountRequest) {
-        ApiResponse response = accountService.createAccount(accountRequest, branchId, customerId);
+            @RequestParam List<Long> customerIds,
+            @PathVariable Long branchId) {
+        ApiResponse response = accountService.createAccount(branchId, customerIds);
         return ResponseEntity.ok(response);
     }
 

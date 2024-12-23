@@ -22,7 +22,7 @@ public class BranchRequest {
 
     private String location;
 
-    private int branchCode;
+
 
 
 }

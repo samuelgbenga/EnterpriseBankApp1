@@ -28,28 +28,26 @@ public class BankServiceImpl implements BankService {
 
     private final BankRepository bankRepository;
 
-    private final BranchRepository branchRepository;
-
 
     private final ModelMapper modelMapper;
 
 
-    @Override
-    public ApiResponse registerBank(BankRequest bankRequest) {
-        try {
-            Bank bank = Bank.builder()
-                    .name(bankRequest.getName())
-                    .address(bankRequest.getAddress())
-                    .contactDetails(bankRequest.getContactDetails())
-                    .build();
-            bank = bankRepository.save(bank);
-
-            BankDto bankDto = modelMapper.map(bank, BankDto.class);
-            return new ApiResponse("Bank registered successfully", bankDto, null);
-        } catch (Exception e) {
-            return new ApiResponse("Error registering bank: " + e.getMessage(), null, null);
-        }
-    }
+//    @Override
+//    public ApiResponse registerBank(BankRequest bankRequest) {
+//        try {
+//            Bank bank = Bank.builder()
+//                    .name(bankRequest.getName())
+//                    .address(bankRequest.getAddress())
+//                    .contactDetails(bankRequest.getContactDetails())
+//                    .build();
+//            bank = bankRepository.save(bank);
+//
+//            BankDto bankDto = modelMapper.map(bank, BankDto.class);
+//            return new ApiResponse("Bank registered successfully", bankDto, null);
+//        } catch (Exception e) {
+//            return new ApiResponse("Error registering bank: " + e.getMessage(), null, null);
+//        }
+//    }
 
     @Override
     public ApiResponse updateBank(Long bankId, BankRequest bankRequest) {
@@ -75,15 +73,13 @@ public class BankServiceImpl implements BankService {
 
     // Todo: Secure this endpoint
     @Override
-    public ApiResponse fetchBankDetails(Long bankId) {
+    public ApiResponse fetchBankDetails() {
         try {
-            Optional<Bank> bank = bankRepository.findById(bankId);
-            if (bank.isPresent()) {
-                BankDto bankDto = modelMapper.map(bank.get(), BankDto.class);
+            List<Bank> bank = bankRepository.findAll();
+
+                BankDto bankDto = modelMapper.map(bank.getFirst(), BankDto.class);
                 return new ApiResponse("Bank details fetched successfully", bankDto, null);
-            } else {
-                return new ApiResponse("Bank not found", null, null);
-            }
+
         } catch (Exception e) {
             return new ApiResponse("Error fetching bank details: " + e.getMessage(), null, null);
         }

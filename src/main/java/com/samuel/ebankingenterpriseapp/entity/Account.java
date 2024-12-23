@@ -9,6 +9,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Getter
@@ -44,4 +45,13 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
+
+    @PrePersist
+    private void generateAccountNumber() {
+        if (this.accountNumber == null || this.accountNumber.isEmpty()) {
+            String prefix = "101";
+            String randomDigits = String.format("%07d", new Random().nextInt(10000000));
+            this.accountNumber = prefix + randomDigits;
+        }
+    }
 }

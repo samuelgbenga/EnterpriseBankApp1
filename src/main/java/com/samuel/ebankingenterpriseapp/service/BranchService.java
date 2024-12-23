@@ -5,7 +5,7 @@ import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 
 public interface BranchService {
 
-    ApiResponse addBranchToBank(Long bankId, BranchRequest branchRequest);
+    ApiResponse addBranchToBank( BranchRequest branchRequest);
 
     ApiResponse updateBranch(Long branchId, BranchRequest branchRequest);
 

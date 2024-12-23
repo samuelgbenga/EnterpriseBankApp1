@@ -2,21 +2,34 @@
 #### Urgent and Todos #####################################################################################
 
 ---
-Seed the bank upon starting the app and remove the register endpoint
+Seed the bank upon starting the app and remove the register endpoint (done)
 ---
-make the account number generate randomly automatically.
+make the account number generate randomly automatically. (done)
+--
+remover the id from the branch creation controller ( done)
+--
+
+--
+Edit Manager of a branch. (done)
 --
 make acccount creation flexible in terms of the number of customer id that it can be taken.
-since the number of customers can vary upon creation of account.
---
-also update the both save and update to return that particular entity.
-so it will be easy for the frontend to capture any update or save by that return so no need for extra call
+since the number of customers can vary upon creation of account. ( done )
+
+-- consider the other servicec-
+Transaction
+and Loan
+
+
+
 
 #############################################################################################################
 
 
 
 #### Questions and Todos #####################################################################################
+-- Email configuration
+-- Security Configuration
+-----------------------------------
 i am just focused on normal crud operation for each entity.
 afterwards i will settle the connections between the different services.
 the influentital service and the more business intrecate logic connects each service.
@@ -31,21 +44,38 @@ the influentital service and the more business intrecate logic connects each ser
 // then another manager can be deleted and removed from being the manager of that branch hence the branch
 // under that manager would be null
 -----
+
+---
 look into proper logging managment in spring boot using the right tool
 loggin best practice: using s4jl whatever or any other tools.
 ----
+
+---
 why not is System.out.println not prefered over the other loggins or are they not doing same thing loggins
+---
+
 ---
 Adjust to meet best practice implement DTos and ModelMapper and proper Loggins and Error Handling
 using custome Error Handler as the case may be.
---
+---
+
+---
 The Bank will later be seeded and any point of Api contact for registering new
-Bank will be removed but edit will be allowed.
+Bank will be removed but edit will be allowed. (done)
 --
 there would be access levels
 the bank overall access
 customers transactions and financial plan and loan
 Branch level that managers there own customers account for them. ( customers regiesterd under them)
+--
+
+----
+auto generate bank branch code (done)
+---
+
+---
+include the needed field (ok)
+--
 #############################################################################################################
 
 
@@ -76,7 +106,16 @@ and also capture transaction made via atm.
 i migth consider utilizing index on the database (for fun and learning purposes)
 --
 implement push notification using websocket + workerservice + localstorage
+--
 
+--
+consider the entire staff database
+--
+
+--
+also update the both save and update to return that particular entity (this adjustment will be done when at the end time).
+so it will be easy for the frontend to capture any update or save by that return so no need for extra call
+---
 ################################################################################################################
 
 

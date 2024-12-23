@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,16 +32,15 @@ public class BranchServiceImpl implements BranchService {
 
 
     @Override
-    public ApiResponse addBranchToBank(Long bankId, BranchRequest branchRequest) {
+    public ApiResponse addBranchToBank( BranchRequest branchRequest) {
 
         try {
-            Optional<Bank> bank = bankRepository.findById(bankId);
-            if (bank.isPresent() ) {
+            List<Bank> bank = bankRepository.findAll();
+
                 Branch branch = Branch.builder()
                         .name(branchRequest.getName())
-                        .branchCode(branchRequest.getBranchCode())
                         .location(branchRequest.getLocation())
-                        .bank(bank.get()) // Link branch to the bank
+                        .bank(bank.getFirst()) // Link branch to the bank
                         .active(true) // Active by default
                         .build();
                 branch = branchRepository.save(branch);
@@ -48,9 +48,7 @@ public class BranchServiceImpl implements BranchService {
                 BranchDto branchDto = modelMapper.map(branch, BranchDto.class);
 
                 return new ApiResponse("Branch added successfully", branchDto, null);
-            } else {
-                return new ApiResponse("Bank not found or Branch Manger Does Not Exist For this Branch", null, null);
-            }
+
         } catch (Exception e) {
             return new ApiResponse("Error adding branch: " + e.getMessage(), null, null);
         }
@@ -63,7 +61,6 @@ public class BranchServiceImpl implements BranchService {
             if (branchOptional.isPresent()) {
                 Branch branch = branchOptional.get();
                 branch.setName(branchRequest.getName());
-                branch.setBranchCode(branchRequest.getBranchCode());
                 branch.setLocation(branchRequest.getLocation());
                 branchRepository.save(branch);
                 return new ApiResponse("Branch updated successfully", null, null);
@@ -111,10 +108,14 @@ public class BranchServiceImpl implements BranchService {
 
     }
 
+    // Edit branch manager info
+
+
     // Todo: this two below service method will be implemented in the branch level then used in the bank level
     // Todo: i will also like to return them as map: that is each transaction is mapped to there respective branch
     // Todo: same with the loans
     //  Todo: fetch all transactions
     // Todo: Fetch all loans
+    // Todo: Fetch return specific data only remove generic return like fetch branch.
 }
 
