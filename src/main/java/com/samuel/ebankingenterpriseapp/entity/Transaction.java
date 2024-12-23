@@ -1,6 +1,7 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.samuel.ebankingenterpriseapp.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,7 @@ public class Transaction {
 
     private LocalDate transactionDate;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;

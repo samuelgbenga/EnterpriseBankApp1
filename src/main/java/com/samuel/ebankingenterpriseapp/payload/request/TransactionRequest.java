@@ -19,9 +19,11 @@ public class TransactionRequest {
 
     private BigDecimal amount;
 
-    private TransactionType transferType; // Deposit, Withdrawal, Transfer
-
     private LocalDate transactionDate;
+
+    private String recipientAccountNumber;
+
+    private String sourceAccountNumber;
 
 
 }

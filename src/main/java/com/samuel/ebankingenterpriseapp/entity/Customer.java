@@ -34,6 +34,5 @@ public class Customer {
     @ManyToMany(mappedBy = "customers")
     private List<Account> accounts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Loan> loans;
+
 }

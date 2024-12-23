@@ -43,8 +43,14 @@ public class Account {
     )
     private List<Customer> customers = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Loan> loans;
 
     @PrePersist
     private void generateAccountNumber() {
@@ -54,4 +60,6 @@ public class Account {
             this.accountNumber = prefix + randomDigits;
         }
     }
+
+
 }

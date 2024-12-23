@@ -1,5 +1,6 @@
 
 #### Urgent and Todos #####################################################################################
+#### Read up how does banking application works in general
 
 ---
 Seed the bank upon starting the app and remove the register endpoint (done)
@@ -16,9 +17,17 @@ make acccount creation flexible in terms of the number of customer id that it ca
 since the number of customers can vary upon creation of account. ( done )
 
 -- consider the other servicec-
+--
 Transaction
+  - Get transaction by transaction type
+--
 and Loan
-
+  - Loan - Transaction Relationship (Independent Loan only considers your balance account balance)
+---
+AI chat
+--
+push notification
+--
 
 
 
@@ -27,8 +36,12 @@ and Loan
 
 
 #### Questions and Todos #####################################################################################
+-- Account Type before fixing email.
+    --- constrain on the amount of account that can be created by one user with respect to the account type
 -- Email configuration
 -- Security Configuration
+       there would be levels of access based on Manager (equivalent to branch),
+        Bank Staff (equivalent to viewing transactions, report and auditing, reporting, monitory etc)
 -----------------------------------
 i am just focused on normal crud operation for each entity.
 afterwards i will settle the connections between the different services.
@@ -95,6 +108,8 @@ next i will try to get look at the questions raised during the process
 
 
 ###### Back logs ################################################################################################
+
+
 ----
 I would also like to implement bvn mechanism
 ---

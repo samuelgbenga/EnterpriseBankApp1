@@ -1,6 +1,7 @@
 package com.samuel.ebankingenterpriseapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.samuel.ebankingenterpriseapp.enums.LoanStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,8 @@ public class Loan {
 
     private LoanStatus loanStatus; // Pending, Approved, Paid
 
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 }
