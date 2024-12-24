@@ -63,6 +63,33 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
+
+    @GetMapping("/history/deposit")
+    public ResponseEntity<ApiResponse> getTransactionHistoryDeposit(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ApiResponse response = transactionService.getTransactionByDeposit(page, size);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/history/transfer")
+    public ResponseEntity<ApiResponse> getTransactionHistoryTransfer(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ApiResponse response = transactionService.getTransactionByTransfer(page, size);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/history/withdrawal")
+    public ResponseEntity<ApiResponse> getTransactionHistoryWithdrawal(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        ApiResponse response = transactionService.getTransactionByWithdrawal(page, size);
+        return ResponseEntity.ok(response);
+    }
     // Todo: the monitoring will be done internally
 //    /**
 //     * Monitor suspicious transactions above a certain threshold.

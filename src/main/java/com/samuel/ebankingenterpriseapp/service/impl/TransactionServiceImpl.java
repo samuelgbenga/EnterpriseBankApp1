@@ -3,6 +3,7 @@ package com.samuel.ebankingenterpriseapp.service.impl;
 import com.samuel.ebankingenterpriseapp.entity.Account;
 import com.samuel.ebankingenterpriseapp.entity.Transaction;
 import com.samuel.ebankingenterpriseapp.enums.TransactionType;
+import com.samuel.ebankingenterpriseapp.model.TransactionDto;
 import com.samuel.ebankingenterpriseapp.payload.request.TransactionRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.AccountRepository;
@@ -12,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -51,9 +54,10 @@ public class TransactionServiceImpl implements TransactionService {
                 .amount(request.getAmount())
                 .transferType(TransactionType.DEPOSIT)
                 .transactionDate(LocalDate.now())
-                .account(account)
+                .destinationAccount(account)
                 .build();
 
+        account.getIncomingTransactions().add(transaction);
         transactionRepository.save(transaction);
         accountRepository.save(account);
 
@@ -90,9 +94,10 @@ public class TransactionServiceImpl implements TransactionService {
                 .amount(request.getAmount())
                 .transferType(TransactionType.WITHDRAWAL)
                 .transactionDate(LocalDate.now())
-                .account(account)
+                .sourceAccount(account)
                 .build();
 
+        account.getOutgoingTransactions().add(transaction);
         transactionRepository.save(transaction);
         accountRepository.save(account);
 
@@ -140,9 +145,12 @@ public class TransactionServiceImpl implements TransactionService {
                 .amount(request.getAmount())
                 .transferType(TransactionType.TRANSFER)
                 .transactionDate(LocalDate.now())
-                .account(sourceAccount)
+                .sourceAccount(sourceAccount)
+                .destinationAccount(destinationAccount)
                 .build();
 
+        sourceAccount.getOutgoingTransactions().add(transaction);
+        destinationAccount.getIncomingTransactions().add(transaction);
         transactionRepository.save(transaction);
         accountRepository.save(sourceAccount);
         accountRepository.save(destinationAccount);
@@ -177,6 +185,36 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
     }
 
+    @Override
+    public ApiResponse getTransactionByDeposit(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("transactionDate").descending());
+        Page<TransactionDto> transactions = transactionRepository.findByTransactionTypeDeposit(TransactionType.DEPOSIT, pageable);
+        return ApiResponse.builder()
+                .message("Deposit Transaction history retrieved successfully")
+                .objectList(transactions.getContent())
+                .build();
+    }
+
+    @Override
+    public ApiResponse getTransactionByWithdrawal(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("transactionDate").descending());
+        Page<TransactionDto> transactions = transactionRepository.findByTransactionTypeWithdrawal(TransactionType.WITHDRAWAL, pageable);
+        return ApiResponse.builder()
+                .message("Withdrawal Transaction history retrieved successfully")
+                .objectList(transactions.getContent())
+                .build();
+    }
+
+    @Override
+    public ApiResponse getTransactionByTransfer(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("transactionDate").descending());
+        Page<TransactionDto> transactions = transactionRepository.findByTransactionType(TransactionType.TRANSFER, pageable);
+        return ApiResponse.builder()
+                .message("Transfer Transaction history retrieved successfully")
+                .objectList(transactions.getContent())
+                .build();
+    }
+
 
     /**
      * Monitor suspicious transactions (e.g., unusually large transfers).
@@ -195,4 +233,5 @@ public class TransactionServiceImpl implements TransactionService {
                     System.out.println("Suspicious transaction detected: " + transaction);
                 });
     }
+
 }

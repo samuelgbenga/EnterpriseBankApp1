@@ -43,9 +43,15 @@ public class Account {
     )
     private List<Customer> customers = new ArrayList<>();
 
+    // Transactions where this account is the source
     @JsonManagedReference
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions;
+    @OneToMany(mappedBy = "sourceAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> outgoingTransactions = new ArrayList<>();
+
+    // Transactions where this account is the destination
+    @JsonManagedReference
+    @OneToMany(mappedBy = "destinationAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> incomingTransactions = new ArrayList<>();
 
 
     @JsonManagedReference

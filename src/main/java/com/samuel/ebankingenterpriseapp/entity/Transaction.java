@@ -28,8 +28,16 @@ public class Transaction {
 
     private LocalDate transactionDate;
 
+    // Relationship to the source account
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    @JoinColumn(name = "source_account_id")
+    private Account sourceAccount;
+
+    // Relationship to the destination account
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "destination_account_id")
+    private Account destinationAccount;
+
 }

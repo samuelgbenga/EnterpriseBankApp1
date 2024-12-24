@@ -148,4 +148,10 @@ public class AccountServiceImpl implements AccountService {
                     .build();
         }
     }
+
+    /**
+     * Todo: get account balance by account number
+     * Todo: remove unnecessary  service method
+     * Todo: update the necessary service method
+     */
 }

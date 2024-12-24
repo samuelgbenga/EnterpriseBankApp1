@@ -23,6 +23,13 @@ Transaction
 --
 and Loan
   - Loan - Transaction Relationship (Independent Loan only considers your balance account balance)
+Back to transaction:
+  - consider mapping Transfer Transaction to the receivers end also.
+  - That is the transfer to an account should also be reflected in that user transaction history.
+---
+----
+Arrange Your Dtos with the repository using the optional methodology
+Also try and see if you can loop inside of an hql to get speicific data from a list that is in an object.
 ---
 AI chat
 --
@@ -39,9 +46,12 @@ push notification
 -- Account Type before fixing email.
     --- constrain on the amount of account that can be created by one user with respect to the account type
 -- Email configuration
+    - monthly emailing of transaction history for the month and belance etc.
 -- Security Configuration
        there would be levels of access based on Manager (equivalent to branch),
         Bank Staff (equivalent to viewing transactions, report and auditing, reporting, monitory etc)
+-- other Service like auditing will be considered later.
+-- Consider using uuid to id transaction instead of numbers
 -----------------------------------
 i am just focused on normal crud operation for each entity.
 afterwards i will settle the connections between the different services.

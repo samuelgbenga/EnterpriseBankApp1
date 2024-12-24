@@ -15,5 +15,11 @@ public interface TransactionService {
 
     ApiResponse getTransactionHistory(String accountNumber, int page, int size);
 
+    ApiResponse getTransactionByDeposit(int page, int size);
+
+    ApiResponse getTransactionByWithdrawal(int page, int size);
+
+    ApiResponse getTransactionByTransfer(int page, int size);
+
     void monitorSuspiciousTransactions(BigDecimal thresholdAmount);
 }

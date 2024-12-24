@@ -13,8 +13,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+
 public class TransactionDto {
 
 
@@ -26,9 +25,53 @@ public class TransactionDto {
 
     private LocalDate transactionDate;
 
-   // private Account account;
+    private String sourceAccount;
 
-    private String accountName;
+    private String destinationAccount;
 
-    private Long accountId;
+
+
+    // Constructor for the query
+    public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
+                          LocalDate transactionDate, String sourceAccount) {
+        this.id = id;
+        this.amount = amount;
+        this.transferType = transferType;
+        this.transactionDate = transactionDate;
+        this.sourceAccount = sourceAccount;
+
+
+    }
+
+    // i adjusted the constructor so it can overload for action specific to deposit or withdrawal
+    public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
+                           String destinationAccount, LocalDate transactionDate) {
+        this.id = id;
+        this.amount = amount;
+        this.transferType = transferType;
+        this.transactionDate = transactionDate;
+        this.destinationAccount = destinationAccount;
+
+
+    }
+
+
+    // Constructor for the query
+    public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
+                          LocalDate transactionDate, String sourceAccount, String destinationAccount) {
+        this.id = id;
+        this.amount = amount;
+        this.transferType = transferType;
+        this.transactionDate = transactionDate;
+        this.sourceAccount = sourceAccount!=null ? sourceAccount: "N/A";
+        this.destinationAccount = destinationAccount!= null ? destinationAccount : "N/A";
+
+    }
+
+    /**
+     * Todo: try staring with the modified constructor first
+     *
+     */
+
+
 }
