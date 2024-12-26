@@ -37,9 +37,6 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public ApiResponse deposit( TransactionRequest request) {
-
-
-
         Optional<Account> accountOptional = accountRepository.findByAccountNumber(request.getRecipientAccountNumber());
         if (accountOptional.isEmpty()) {
             return ApiResponse.builder()
@@ -52,8 +49,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = Transaction.builder()
                 .amount(request.getAmount())
+                .transactionMessage(request.getTransactionMessage())
                 .transferType(TransactionType.DEPOSIT)
-                .transactionDate(LocalDate.now())
                 .destinationAccount(account)
                 .build();
 
@@ -92,8 +89,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = Transaction.builder()
                 .amount(request.getAmount())
+                .transactionMessage(request.getTransactionMessage())
                 .transferType(TransactionType.WITHDRAWAL)
-                .transactionDate(LocalDate.now())
                 .sourceAccount(account)
                 .build();
 
@@ -144,7 +141,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = Transaction.builder()
                 .amount(request.getAmount())
                 .transferType(TransactionType.TRANSFER)
-                .transactionDate(LocalDate.now())
+                .transactionMessage(request.getTransactionMessage())
                 .sourceAccount(sourceAccount)
                 .destinationAccount(destinationAccount)
                 .build();

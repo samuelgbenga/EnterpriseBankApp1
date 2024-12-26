@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,14 +59,28 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Loan> loans;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
-    private void generateAccountNumber() {
+    private void onCreate() {
         if (this.accountNumber == null || this.accountNumber.isEmpty()) {
             String prefix = "101";
             String randomDigits = String.format("%07d", new Random().nextInt(10000000));
             this.accountNumber = prefix + randomDigits;
+
         }
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+
     }
 
-
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -19,11 +19,10 @@ public class TransactionRequest {
 
     private BigDecimal amount;
 
-    private LocalDate transactionDate;
-
     private String recipientAccountNumber;
 
     private String sourceAccountNumber;
 
+    private String transactionMessage;
 
 }

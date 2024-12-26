@@ -1,3 +1,15 @@
+#### Good news ######
+-For now lets just assume the customer pays regularly
+- later work will include payment defilement logic, and how the interest is accured for delayed payment (policy).
+- the idea i have about that is to. make it such that when there is a delay of payment there is a penelty charges.
+- which will allow recalculation of the monthly payment. but there will be a treshold such that if it is exceeded
+- the payment range will be increased instead.
+- for now loan payment is monthly but will make it varies based on customer negotiation default is monthly though.
+
+Study bank Loan interest rate calculation and also penelty of acreuing overdues
+once i am done with the loan part.
+i will be moving to the frontend part.
+Minimal.
 
 #### Urgent and Todos #####################################################################################
 #### Read up how does banking application works in general
@@ -19,10 +31,15 @@ since the number of customers can vary upon creation of account. ( done )
 -- consider the other servicec-
 --
 Transaction
-  - Get transaction by transaction type
+  - Get transaction by transaction type (done)
 --
 and Loan
   - Loan - Transaction Relationship (Independent Loan only considers your balance account balance)
+  - i included a loan repayment schedule entity ( to monitor loan repayment and penalty for overdue).
+  - over due will acrue some additional charges (by percentage) which will affect the overall amount to be paid.
+  - While the payment date will be fixed. Therefor the payment would increase for the next month. after re-evaluation
+  - with the new penalty charges
+  - optimize the loan by removing the loanRepaymentSchedule
 Back to transaction:
   - consider mapping Transfer Transaction to the receivers end also.
   - That is the transfer to an account should also be reflected in that user transaction history.
@@ -43,6 +60,8 @@ push notification
 
 
 #### Questions and Todos #####################################################################################
+-- i will like to reconsider the relationship if biderictional is needed
+-- or maybe i can just make use of onetomany alone without a backreference.(many to one)
 -- Account Type before fixing email.
     --- constrain on the amount of account that can be created by one user with respect to the account type
 -- Email configuration
@@ -52,6 +71,9 @@ push notification
         Bank Staff (equivalent to viewing transactions, report and auditing, reporting, monitory etc)
 -- other Service like auditing will be considered later.
 -- Consider using uuid to id transaction instead of numbers
+
+
+
 -----------------------------------
 i am just focused on normal crud operation for each entity.
 afterwards i will settle the connections between the different services.
@@ -119,6 +141,11 @@ next i will try to get look at the questions raised during the process
 
 ###### Back logs ################################################################################################
 
+--
+Will include a field in the loan called loan score that will calculate if a customer is a good re-payer of debt or
+not.
+this will be done using the number of time a  customer made payment on time and overdue payment.
+--
 
 ----
 I would also like to implement bvn mechanism
@@ -138,9 +165,17 @@ consider the entire staff database
 --
 
 --
+Implement Indexing first hand
+--
+
+--
 also update the both save and update to return that particular entity (this adjustment will be done when at the end time).
 so it will be easy for the frontend to capture any update or save by that return so no need for extra call
 ---
+
+--
+include alert for overdue payment and days before over due payment.
+--
 ################################################################################################################
 
 

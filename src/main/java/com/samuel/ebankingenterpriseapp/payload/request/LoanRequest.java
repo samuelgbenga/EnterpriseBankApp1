@@ -1,8 +1,6 @@
 package com.samuel.ebankingenterpriseapp.payload.request;
 
 
-import com.samuel.ebankingenterpriseapp.entity.Customer;
-import com.samuel.ebankingenterpriseapp.enums.LoanStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,17 +15,14 @@ import java.time.LocalDate;
 @Builder
 public class LoanRequest {
 
-
+    private String accountNumber;
 
     private BigDecimal amount;
 
-    private BigDecimal interestRate;
-
-    private LocalDate startDate;
+    private int numberOfInstallments;
 
     private LocalDate endDate;
 
-    private LoanStatus loanStatus = LoanStatus.PENDING; // Pending, Approved, Paid
 
 
 }

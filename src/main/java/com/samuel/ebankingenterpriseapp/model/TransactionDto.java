@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class TransactionDto {
 
     private TransactionType transferType; // Deposit, Withdrawal, Transfer
 
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDate;
 
     private String sourceAccount;
 
@@ -33,7 +34,7 @@ public class TransactionDto {
 
     // Constructor for the query
     public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
-                          LocalDate transactionDate, String sourceAccount) {
+                          LocalDateTime transactionDate, String sourceAccount) {
         this.id = id;
         this.amount = amount;
         this.transferType = transferType;
@@ -45,7 +46,7 @@ public class TransactionDto {
 
     // i adjusted the constructor so it can overload for action specific to deposit or withdrawal
     public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
-                           String destinationAccount, LocalDate transactionDate) {
+                           String destinationAccount, LocalDateTime transactionDate) {
         this.id = id;
         this.amount = amount;
         this.transferType = transferType;
@@ -58,7 +59,7 @@ public class TransactionDto {
 
     // Constructor for the query
     public TransactionDto(Long id, BigDecimal amount, TransactionType transferType,
-                          LocalDate transactionDate, String sourceAccount, String destinationAccount) {
+                          LocalDateTime transactionDate, String sourceAccount, String destinationAccount) {
         this.id = id;
         this.amount = amount;
         this.transferType = transferType;

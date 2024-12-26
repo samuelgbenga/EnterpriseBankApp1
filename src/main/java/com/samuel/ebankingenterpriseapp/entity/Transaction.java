@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,10 +24,13 @@ public class Transaction {
 
     private BigDecimal amount;
 
+    // to write about the transaction being done whether its a payment of debt
+    // or it is other normal transaction
+    private String transactionMessage;
+
     @Enumerated(EnumType.STRING)
     private TransactionType transferType; // Deposit, Withdrawal, Transfer
 
-    private LocalDate transactionDate;
 
     // Relationship to the source account
     @JsonBackReference
@@ -39,5 +43,17 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "destination_account_id")
     private Account destinationAccount;
+
+    @Column(nullable = false)
+    private LocalDateTime transactionDate;
+
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.transactionDate = now;
+
+    }
+
 
 }
