@@ -32,6 +32,7 @@ public class BranchManagerServiceImpl implements BranchManagerService {
                         .lastName(branchManagerRequest.getLastName())
                         .contactNumber(branchManagerRequest.getContactNumber())
                         .email(branchManagerRequest.getEmail())
+                        .active(true)
                         .branch(branch) // Linking the branch to the manager
                         .build();
                 branchManagerRepository.save(branchManager);

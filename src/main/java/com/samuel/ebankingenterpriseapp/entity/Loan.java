@@ -24,6 +24,9 @@ public class Loan {
 
     private BigDecimal amount;
 
+    // amount after interest is calculated
+    private BigDecimal amountAfterInterest;
+
     private int numberOfInstallments; // number of installment;
 
     private BigDecimal interestRate; // interest rate for total amount borrowed

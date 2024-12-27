@@ -58,12 +58,15 @@ public class LoanServiceImpl implements LoanService {
                 .add(loanRequest.getAmount().multiply(interestRate));
 
         BigDecimal actualInstallmentDue = amountAfterInterest
-                .divide(BigDecimal.valueOf(loanRequest.getNumberOfInstallments()));
+                .divide(BigDecimal.valueOf(loanRequest.getNumberOfInstallments()),  2, RoundingMode.HALF_UP);
+
+        // actual amount to be paid after interest calculated
 
 
         Loan loan = Loan.builder()
                 .amount(loanRequest.getAmount())
                 .interestRate(new BigDecimal(INTEREST_RATE))
+                .amountAfterInterest(amountAfterInterest)
                 .loanStatus(LoanStatus.REVIEW)
                 .actualInstallmentDue(actualInstallmentDue)
                 .numberOfInstallments(loanRequest.getNumberOfInstallments())
@@ -107,6 +110,9 @@ public class LoanServiceImpl implements LoanService {
             LocalDate startDate = LocalDate.now().plusMonths(2); // three months moratorium period.
             LocalDate endDate = loan.getEndDate();
 
+            // update the proposed endDate to matching date inline with the start date.
+
+
 
             long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
             this.daysPerInstallment = Math.toIntExact(totalDays / numberOfInstallments);
@@ -114,6 +120,7 @@ public class LoanServiceImpl implements LoanService {
             // Add the loan repayment range (months) to the start dat
             loan.setLoanApprovalDate(LocalDate.now());
             loan.setStartDate(startDate);
+            loan.setEndDate(startDate.plusDays(this.daysPerInstallment * numberOfInstallments));
             loan.setCurrentDueDate(startDate.plusDays(this.daysPerInstallment));
             loan.setCurrentDuePayment(loan.getActualInstallmentDue());
             loan.setCurrentDueRepaymentSTatus(RepaymentStatus.PENDING);
@@ -175,6 +182,13 @@ public class LoanServiceImpl implements LoanService {
         }
 
         Loan loan = loanOptional.get();
+
+        if (loan.getLoanStatus() == LoanStatus.PAID) {
+            return ApiResponse.builder()
+                    .message("Loan has been paid completely")
+                    .build();
+        }
+
         if (loan.getLoanStatus() != LoanStatus.APPROVED) {
             return ApiResponse.builder()
                     .message("Loan is not in an approved state")
@@ -187,7 +201,7 @@ public class LoanServiceImpl implements LoanService {
         // return if the amount does not equal the current due payment
         if (loan.getCurrentDuePayment().compareTo(repaymentAmount) != 0) {
             return ApiResponse.builder()
-                    .message("This is not the accurate amount to pay this is amount to be paid: "+ loan.getCurrentDuePayment())
+                    .message("This is not the accurate amount to pay this is amount to be paid: "+ loan.getCurrentDuePayment().setScale(2, RoundingMode.HALF_UP))
                     .build();
         }
 
@@ -198,8 +212,8 @@ public class LoanServiceImpl implements LoanService {
 
         // check if the payment is complete and return if true
         BigDecimal finalPayment = loan.getAmountPaidSoFar().add(repaymentAmount);
-        BigDecimal actualAmountPlusAccruedRate = loan.getAmount().add(loan.getAccruedPenaltyAmount());
-        if (loan.getNumberOfInstallmentPaid() == loan.getNumberOfInstallments() &&
+        BigDecimal actualAmountPlusAccruedRate = loan.getAmountAfterInterest().add(loan.getAccruedPenaltyAmount());
+        if (loan.getNumberOfInstallmentPaid() + 1 == loan.getNumberOfInstallments() &&
         finalPayment.compareTo(actualAmountPlusAccruedRate) == 0
         ) {
             loan.setLoanStatus(LoanStatus.PAID);
@@ -223,8 +237,9 @@ public class LoanServiceImpl implements LoanService {
         loan.setCurrentPenaltyRate(new BigDecimal(0.01));
 
         // update to next
-        loan.setCurrentDueDate(loan.getCurrentDueDate().plusMonths(this.daysPerInstallment));
+        loan.setCurrentDueDate(loan.getCurrentDueDate().plusDays(this.daysPerInstallment));
         loan.setAmountPaidSoFar(loan.getAmountPaidSoFar().add(repaymentAmount));
+        loan.setNumberOfInstallmentPaid(loan.getNumberOfInstallmentPaid() + 1);
 
         Loan updatedLoan = loanRepository.save(loan);
 

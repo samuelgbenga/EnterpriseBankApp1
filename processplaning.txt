@@ -142,6 +142,10 @@ next i will try to get look at the questions raised during the process
 ###### Back logs ################################################################################################
 
 --
+will later include branch to be able to accommodate multiple branch manager
+with one active one. the rest will be historical branch managers (so there information remains).
+--
+--
 Will include a field in the loan called loan score that will calculate if a customer is a good re-payer of debt or
 not.
 this will be done using the number of time a  customer made payment on time and overdue payment.
