@@ -35,14 +35,20 @@ Transaction
 --
 and Loan
   - Loan - Transaction Relationship (Independent Loan only considers your balance account balance)
-  - i included a loan repayment schedule entity ( to monitor loan repayment and penalty for overdue).
+  - i included a loan repayment schedule entity ( to monitor loan repayment and penalty for overdue). (Removed)
   - over due will acrue some additional charges (by percentage) which will affect the overall amount to be paid.
   - While the payment date will be fixed. Therefor the payment would increase for the next month. after re-evaluation
   - with the new penalty charges
-  - optimize the loan by removing the loanRepaymentSchedule
+  - optimize the loan by removing the loanRepaymentSchedul
+  - change the current loan payment status. to paid if the time is not yet due but paid already,
+   and to pending if within the month, finally overdue if the installment period is past but not paid yet.
+   - Include a database to monitor user payment history that contains loan Id, currentDuepayment actualduepaymen
+   currentdueDate, actualdueDate. this information be used to calculate the user loan score.
+   - this will be the last thing i do about then move to the frontend before including email and security
+   - Next project will still be banking app but Even driven Application.
 Back to transaction:
-  - consider mapping Transfer Transaction to the receivers end also.
-  - That is the transfer to an account should also be reflected in that user transaction history.
+  - consider mapping Transfer Transaction to the receivers end also. (done)
+  - That is the transfer to an account should also be reflected in that user transaction history. (done)
 ---
 ----
 Arrange Your Dtos with the repository using the optional methodology
