@@ -2,17 +2,21 @@ package com.samuel.ebankingenterpriseapp.service.impl;
 
 import com.samuel.ebankingenterpriseapp.entity.Account;
 import com.samuel.ebankingenterpriseapp.entity.Loan;
+import com.samuel.ebankingenterpriseapp.entity.MonitorLoan;
 import com.samuel.ebankingenterpriseapp.enums.RepaymentStatus;
 import com.samuel.ebankingenterpriseapp.model.LoanRepaymentSchedule;
 import com.samuel.ebankingenterpriseapp.enums.LoanStatus;
+import com.samuel.ebankingenterpriseapp.model.MonitorLoanDto;
 import com.samuel.ebankingenterpriseapp.payload.request.LoanRequest;
 import com.samuel.ebankingenterpriseapp.payload.request.TransactionRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.AccountRepository;
 import com.samuel.ebankingenterpriseapp.repository.LoanRepository;
+import com.samuel.ebankingenterpriseapp.repository.MonitorLoanRepository;
 import com.samuel.ebankingenterpriseapp.service.LoanService;
 import com.samuel.ebankingenterpriseapp.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -34,6 +38,11 @@ public class LoanServiceImpl implements LoanService {
     private final AccountRepository accountRepository;
 
     private final TransactionService transactionService;
+
+    private final MonitorLoanRepository monitorLoanRepository;
+
+
+    private final ModelMapper modelMapper;
 
     // temporal fixed rate will be calculated in the later features
     private final int INTEREST_RATE = 10;
@@ -123,7 +132,6 @@ public class LoanServiceImpl implements LoanService {
             loan.setEndDate(startDate.plusDays(this.daysPerInstallment * numberOfInstallments));
             loan.setCurrentDueDate(startDate.plusDays(this.daysPerInstallment));
             loan.setCurrentDuePayment(loan.getActualInstallmentDue());
-            loan.setCurrentDueRepaymentSTatus(RepaymentStatus.PENDING);
             loan.setAccruedPenaltyAmount(BigDecimal.ZERO);
             loan.setCurrentPenaltyRate(new BigDecimal(0.01));
             loan.setAmountPaidSoFar(BigDecimal.ZERO);
@@ -214,11 +222,14 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal finalPayment = loan.getAmountPaidSoFar().add(repaymentAmount);
         BigDecimal actualAmountPlusAccruedRate = loan.getAmountAfterInterest().add(loan.getAccruedPenaltyAmount());
         if (loan.getNumberOfInstallmentPaid() + 1 == loan.getNumberOfInstallments() &&
-        finalPayment.compareTo(actualAmountPlusAccruedRate) == 0
+        finalPayment.compareTo(actualAmountPlusAccruedRate) >= 0
         ) {
             loan.setLoanStatus(LoanStatus.PAID);
             loan.setAmountPaidSoFar(finalPayment);
             Loan updatedLoan = loanRepository.save(loan);
+
+            // update the loan monitor here also
+            updateMonitorLoan( updatedLoan);
 
             return ApiResponse.builder()
                     .message("Loan paid completely. Thank You our very valued customer")
@@ -242,6 +253,9 @@ public class LoanServiceImpl implements LoanService {
         loan.setNumberOfInstallmentPaid(loan.getNumberOfInstallmentPaid() + 1);
 
         Loan updatedLoan = loanRepository.save(loan);
+
+        // update the loan monitor here
+        updateMonitorLoan( updatedLoan);
 
         return ApiResponse.builder()
                 .message("Repayment processed successfully")
@@ -271,6 +285,28 @@ public class LoanServiceImpl implements LoanService {
         }
 
         return loanRepaymentScheduleList;
+    }
+
+    @Override
+    public ApiResponse getLoanHistory(Long loanId) {
+        Optional<Loan> loanOptional = loanRepository.findById(loanId);
+        if (loanOptional.isEmpty()) {
+            return ApiResponse.builder()
+                    .message("Loan with ID " + loanId + " not found")
+                    .build();
+        }
+        List<MonitorLoan> monitorLoans = monitorLoanRepository.findByLoanId(loanOptional.get().getId());
+
+        List<MonitorLoanDto> monitorLoanDtoList = new ArrayList<>();
+
+        for(MonitorLoan monitorLoan : monitorLoans){
+            monitorLoanDtoList.add(modelMapper.map(monitorLoan, MonitorLoanDto.class));
+        }
+
+        return ApiResponse.builder()
+                .message("Get Loan history")
+                .objectList(monitorLoanDtoList)
+                .build();
     }
 
 
@@ -322,5 +358,25 @@ public class LoanServiceImpl implements LoanService {
         loan.setCurrentPenaltyRate(newCurrentPenaltyRate);
 
         loanRepository.save(loan);
+    }
+
+    // update the monitorLoan db
+    private void updateMonitorLoan(Loan loan){
+
+        MonitorLoan monitorLoan = new MonitorLoan();
+
+
+        monitorLoan.setLoan(loan);
+        monitorLoan.setActualDuePayment(loan.getActualInstallmentDue());
+        monitorLoan.setActualDueDate(loan.getCurrentDueDate());
+        monitorLoan.setCurrentDuePayment(loan.getCurrentDuePayment());
+        if(LocalDate.now().isAfter(loan.getCurrentDueDate())){
+            monitorLoan.setCurrentDueRepaymentSTatus(RepaymentStatus.DEFAULTED);
+        }else{
+            monitorLoan.setCurrentDueRepaymentSTatus(RepaymentStatus.NOT_DEFAULTED);
+        }
+
+
+        monitorLoanRepository.save(monitorLoan);
     }
 }

@@ -18,6 +18,8 @@ public interface LoanService {
 
     //ApiResponse generateRepaymentSchedule(Long loanId, int numberOfInstallments);
 
+    ApiResponse getLoanHistory(Long loanId);
+
     ApiResponse getOverduePayments();
 
     ApiResponse getInitialInterestRate( int range, BigDecimal loanAmount);

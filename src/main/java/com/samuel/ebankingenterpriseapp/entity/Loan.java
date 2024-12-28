@@ -54,9 +54,6 @@ public class Loan {
     private int numberOfInstallmentPaid;
 
     @Enumerated(EnumType.STRING)
-    private RepaymentStatus currentDueRepaymentSTatus;
-
-    @Enumerated(EnumType.STRING)
     private LoanStatus loanStatus; // Pending, Approved, Paid
 
 

@@ -29,7 +29,6 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setLastName(customerRequest.getLastName());
         customer.setEmail(customerRequest.getEmail());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
-
         customer.setActive(true);
         customerRepository.save(customer);
         return ApiResponse.builder()

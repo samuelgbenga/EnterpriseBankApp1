@@ -52,6 +52,17 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint to get loan history
+     * @param loanId Loan ID
+     * @return ResponseEntity containing ApiResponse
+     */
+    @GetMapping("/{loanId}/history")
+    public ResponseEntity<ApiResponse> getLoanHistory(@PathVariable Long loanId) {
+        ApiResponse response = loanService.getLoanHistory(loanId);
+        return ResponseEntity.ok(response);
+    }
+
 
     /**
      * Endpoint to make a loan repayment

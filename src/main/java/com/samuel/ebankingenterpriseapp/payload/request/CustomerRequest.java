@@ -21,5 +21,4 @@ public class CustomerRequest {
 
     private String phoneNumber;
 
-    private boolean active;
 }
