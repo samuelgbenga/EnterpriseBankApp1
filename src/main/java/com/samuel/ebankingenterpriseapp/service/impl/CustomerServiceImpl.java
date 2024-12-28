@@ -3,15 +3,21 @@ package com.samuel.ebankingenterpriseapp.service.impl;
 
 import com.samuel.ebankingenterpriseapp.entity.Account;
 import com.samuel.ebankingenterpriseapp.entity.Customer;
+import com.samuel.ebankingenterpriseapp.model.EmailDto;
 import com.samuel.ebankingenterpriseapp.payload.request.CustomerRequest;
 import com.samuel.ebankingenterpriseapp.payload.response.ApiResponse;
 import com.samuel.ebankingenterpriseapp.repository.AccountRepository;
 import com.samuel.ebankingenterpriseapp.repository.CustomerRepository;
 import com.samuel.ebankingenterpriseapp.service.AccountService;
 import com.samuel.ebankingenterpriseapp.service.CustomerService;
+import com.samuel.ebankingenterpriseapp.service.EmailService;
+import com.samuel.ebankingenterpriseapp.utils.UtilityService;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
-    private final AccountService accountService;
+    private final EmailService emailService;
 
     @Override
     public ApiResponse registerCustomer(CustomerRequest customerRequest) {
@@ -30,7 +36,33 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(customerRequest.getEmail());
         customer.setPhoneNumber(customerRequest.getPhoneNumber());
         customer.setActive(true);
+
+        boolean isEmailValid = UtilityService.isValidEmail(customerRequest.getEmail());
+        if(!isEmailValid){
+            return ApiResponse.builder()
+                    .message("Email is Invalid.")
+                    .build();
+        }
+
         customerRepository.save(customer);
+
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setRecipient(customerRequest.getEmail());
+        emailDto.setFullName(customerRequest.getFirstName()+" "+customerRequest.getLastName());
+        emailDto.setSubject("Welcoming New Customer");
+        emailDto.setEvent("Registration");
+
+        try {
+
+            emailService.registrationMail(emailDto);
+
+        }catch (MessagingException | IOException e){
+            throw new RuntimeException("Error sending email");
+        }
+
+
+
         return ApiResponse.builder()
                 .message("Customer registered successfully")
                 .object(customer)
@@ -91,3 +123,5 @@ public class CustomerServiceImpl implements CustomerService {
         return new ApiResponse("Customer Deleted", null, null);
     }
 }
+
+

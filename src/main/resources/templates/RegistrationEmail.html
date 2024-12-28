@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xmas Time is here</title>
+    <style>
+        /* Reset CSS */
+        body, h1, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: inter,serif;
+            line-height: 1.6;
+
+        }
+
+        /* Email wrapper */
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow:  1px 1px 2px #6A0DAD;
+        }
+
+        /* Header */
+        .header {
+            background-color: #6A0DAD;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px 0;
+            border-radius: 8px;
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            background-color: #FFFFFF;
+            color: black;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow:  1px 1px 1px 2px #6A0DAD;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: left;
+            margin-top: 20px;
+            padding-left: 20px;
+            font-size: 12px;
+
+        }
+
+         /* Image styling */
+    img {
+        display: block;
+        max-width: 80%; /* Restricts the image size to 80% of the viewport width */
+        height: auto; /* Maintains the aspect ratio */
+        margin: 20px auto; /* Centers the image horizontally and adds vertical spacing */
+        border-radius: 8px; /* Optional: rounds the corners */
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); /* Optional: adds a subtle shadow */
+    }
+
+        /* Media Queries */
+        @media screen and (max-width: 600px) {
+            .email-wrapper {
+                width: 100%;
+            }
+             img {
+            max-width: 100%; /* Ensures the image scales well on smaller screens */
+        }
+        }
+    </style>
+</head>
+<body>
+<div class="email-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <h1>Please Verify Your Email</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <p>Hi, <th:block th:text="${name}"></th:block></p>
+        <p>Welcome to <strong>Groovy International Bank! </strong> </p>
+        <p>To complete your registration, please verify your email by clicking the button below: </p>
+        <a>Verify Email <th:block th:text="${event}"></th:block> </a>
+        <p>If you did not create an account, you can safely ignore this mail.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Thank you,<br> &copy;<b>Groovy International Bank</b>.</p>
+    </div>
+    <img src='cid:HRImage' alt="HR Logo">
+</div>
+</body>
+</html>

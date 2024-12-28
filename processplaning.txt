@@ -55,7 +55,12 @@ Back to transaction:
 Arrange Your Dtos with the repository using the optional methodology
 Also try and see if you can loop inside of an hql to get speicific data from a list that is in an object.
 ---
-AI chat
+My now focus:
+--
+Email
+Security (minimal for now but there would still be levels the bank level,
+ manager and customer. when i include staff entity i would add a new level "staff")
+AI chat (standalone application first then integrate)
 --
 push notification
 --
@@ -67,6 +72,7 @@ push notification
 
 
 #### Questions and Todos #####################################################################################
+
 -- i will like to reconsider the relationship if biderictional is needed
 -- or maybe i can just make use of onetomany alone without a backreference.(many to one)
 -- Account Type before fixing email.
@@ -147,6 +153,7 @@ next i will try to get look at the questions raised during the process
 
 
 ###### Back logs ################################################################################################
+-- create a kyc library for the banking application
   - Loan - Transaction Relationship (Independent Loan only considers your balance account balance) (Later)
 --
 will later include branch to be able to accommodate multiple branch manager
@@ -159,7 +166,7 @@ this will be done using the number of time a  customer made payment on time and 
 --
 
 ----
-I would also like to implement bvn mechanism
+I would also like to implement bvn mechanism (part of the kyc library)
 ---
 Security will be the last thing to implement
 ---
